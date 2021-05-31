@@ -1,0 +1,64 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    service: udagram-userapi
+  name: udagram-userapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      service: udagram-userapi
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        service: udagram-userapi
+    spec:
+      containers:
+      - image: cort0619/udagram-user-api
+        name: udagram-userapi
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"
+        env:
+        - name: URL
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: URL
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: JWT_SECRET
+        - name: POSTGRES_DB
+            valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: POSTGRES_DB
+        - name: POSTGRES_HOST
+            valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: POSTGRES_HOST
+        - name: POSTGRES_USERNAME
+            valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: POSTGRES_USERNAME
+        - name: POSTGRES_PASSWORD
+            valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: POSTGRES_PASSWORD
+      restartPolicy: Always

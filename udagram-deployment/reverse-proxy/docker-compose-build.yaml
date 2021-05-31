@@ -1,0 +1,18 @@
+version: "3"
+services:
+  reverseproxy:
+    build:
+      context: .
+    image: cort0619/reverseproxy
+  feeds_api:
+    build:
+      context: ../../udagram-feeds-api
+    image: cort0619/udagram-feeds-api
+  user_api:
+    build:
+      context: ../../udagram-user-api
+    image: cort0619/udagram-user-api
+  udagram-frontend:
+    build:
+      context: ../../udagram-frontend
+    image: cort0619/udagram-frontend:prod  

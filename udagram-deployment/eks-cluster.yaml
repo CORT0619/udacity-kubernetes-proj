@@ -1,0 +1,13 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: udagram
+  region: us-east-1
+
+nodeGroups:
+  - name: ud-nodeGroups
+    instanceType: t3.micro
+    desiredCapacity: 3
+    minSize: 1
+    maxSize: 4
