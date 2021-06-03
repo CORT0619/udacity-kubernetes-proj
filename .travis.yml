@@ -1,45 +1,30 @@
-language: minimal
+language: node_js
+node_js:
+  - 16
 
-services: docker
-
-env:
-  - DOCKER_COMPOSE_VERSION=1.23.2
-
-before_install:
-  - docker -v && docker-compose -v
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-  - chmod +x ./kubectl
-  - sudo mv ./kubectl /usr/local/bin/kubectl
-
-
+services:
+  - docker
 
 install:
-  - docker-compose -f udagram-deployment/reverse-proxy/docker-compose-build.yaml build --parallel 
+  - echo "nothing needs to be installed"
 
-# language: node_js
-# node_js:
-#   - 15
+before_script:
+  - echo "no tests"
 
-# services:
-#   - docker
+script:
+  - docker --version # prints the version of docker for logging
+  - docker build -t reverse-proxy ./udagram-deployment/reverse-proxy # verify correct
+  - docker tag reverse-proxy cort0619/reverse-proxy
+  - docker build -t udagram-frontend ./udagram-frontend # verify this is ok
+  - docker tag udagram-frontend cort0619/udagram-frontend
+  - docker build -t udagram-feeds-api ./udagram-feeds-api # verify this is ok
+  - docker tag udagram-feeds-api cort0619/udagram-feeds-api
+  - docker build -t udagram-user-api ./udagram-user-api # verify this is ok
+  - docker tag udagram-user-api cort0619/udagram-user-api
 
-# # Pre-testing installs
-# install:
-#   - echo "nothing needs to be installed"
-
-# #Scripts to be run such as tests
-# before_script:
-#   - echo "no tests"
-
-# script:
-#   - docker --version # print the version for logging
-#   - docker build -t reverse-proxy .
-#   - docker tag reverse-proxy cort0619/reverse-proxy:latest
-
-# after_success:
-#   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-#   - docker push cort0619/reverse-proxy
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push cort0619/reverse-proxy
+  - docker push cort0619/udagram-frontend
+  - docker push cort0619/udagram-user-api
+  - docker push cort0619/udagram-feeds-api
