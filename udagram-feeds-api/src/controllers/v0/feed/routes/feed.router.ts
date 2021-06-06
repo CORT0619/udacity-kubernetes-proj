@@ -4,8 +4,13 @@ import {NextFunction} from 'connect';
 import * as jwt from 'jsonwebtoken';
 import * as AWS from '../../../../aws';
 import * as c from '../../../../config/config';
+const { v4: uuidv4 } = require('uuid');
 
 const router: Router = Router();
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   if (!req.headers || !req.headers.authorization) {
@@ -28,11 +33,17 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
+  const pid = uuidv4();
+
+  console.log(new Date().toLocaleString() + `: ${pid} - feed items requested for resource`);
   const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
   items.rows.map((item) => {
     if (item.url) {
       item.url = AWS.getGetSignedUrl(item.url);
     }
+  });
+  sleep(Math.random() * 10000).then(() => {
+    console.log(new Date().toLocaleString() + `: ${pid} - Finished processing request for feed items`);
   });
   res.send(items);
 });
