@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1 #extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
@@ -20,7 +20,7 @@ spec:
         service: reverseproxy
     spec:
       containers:
-      - image: cort0619/reverseproxy
+      - image: cort0619/reverseproxy:latest
         name: reverseproxy
         imagePullPolicy: Always
         resources:
@@ -32,4 +32,4 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 8080
-    restartPolicy: Always
+      restartPolicy: Always
