@@ -13,8 +13,8 @@ before_script:
 
 script:
   - docker --version # prints the version of docker for logging
-  - docker build -t reverse-proxy ./udagram-deployment/reverse-proxy # verify correct
-  - docker tag reverse-proxy cort0619/reverse-proxy
+  - docker build -t reverseproxy ./udagram-deployment/reverseproxy # verify correct
+  - docker tag reverseproxy cort0619/reverseproxy
   - docker build -t udagram-frontend ./udagram-frontend # verify this is ok
   - docker tag udagram-frontend cort0619/udagram-frontend
   - docker build -t udagram-feeds-api ./udagram-feeds-api # verify this is ok
@@ -24,7 +24,7 @@ script:
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push cort0619/reverse-proxy
+  - docker push cort0619/reverseproxy
   - docker push cort0619/udagram-frontend
   - docker push cort0619/udagram-user-api
   - docker push cort0619/udagram-feeds-api
