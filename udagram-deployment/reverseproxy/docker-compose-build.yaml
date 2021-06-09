@@ -3,16 +3,16 @@ services:
   reverseproxy:
     build:
       context: .
-    image: cort0619/reverseproxy
+    image: cort0619/reverseproxy:latest
   feeds_api:
     build:
       context: ../../udagram-feeds-api
-    image: cort0619/udagram-feeds-api
+    image: cort0619/udagram-feeds-api:latest
   user_api:
     build:
       context: ../../udagram-user-api
-    image: cort0619/udagram-user-api
+    image: cort0619/udagram-user-api:latest
   udagram-frontend:
     build:
       context: ../../udagram-frontend
-    image: cort0619/udagram-frontend:prod  
+    image: cort0619/udagram-frontend:latest 
