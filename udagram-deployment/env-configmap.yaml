@@ -2,10 +2,10 @@ apiVersion: v1
 kind: ConfigMap
 data:
   AWS_MEDIA_BUCKET: udagram-williams-dev
-  AWS_PROFILE: 
+  AWS_PROFILE: CORT0619
   AWS_REGION: us-east-1
   JWT_SECRET: helloworld
-  POSTGRES_DB: udagramWilliamsDev
+  POSTGRES_DB: udagramwilliamsdev
   POSTGRES_HOST: udagramwilliamsdev.cgievbifuzlg.us-east-1.rds.amazonaws.com
   URL: http://localhost:8100
 metadata:
