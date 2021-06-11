@@ -8,8 +8,6 @@ import bodyParser from 'body-parser';
 import {config} from './config/config';
 import {V0_USER_MODELS} from './controllers/v0/model.index';
 
-console.log('config.jwt_secret ', config.jwt_secret);
-
 (async () => {
   await sequelize.addModels(V0_USER_MODELS);
   await sequelize.sync();
